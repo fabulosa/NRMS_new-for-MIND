@@ -11,6 +11,8 @@ The source codes of the NRMS_new model for the [MIcrosoft News Dataset(MIND)](ht
 
 The whole model consists of three modules: **TextEncoder**, **NewsEncoder**, and **NRMS_new**, which is a **hierarchical self-attention and additive attention structure** to embed users' reading histories, each news in their reading histories, and each part of news at the same time. 
 
+<p align='center'><img src="model.png", width=60%>
+
 1. **TextEncoder:** same as the NewsEncoder in NRMS, a combindation of multi-head self-attention and additive attention mechanism to generate embeddings for a text, which can be title text, abstract text, title entities, and abstract entities. It also serves a natural framework to encode the reading history sequences of users to a single vector.
 2. **NewsEncoder:** an additive attention that combines category embeddings, subcategory embeddings, title text embeddings, abstract text embeddings, title entity embeddings, and abstract entity embeddings and adds them up to a single vector for a piece of news.
 3. **NRMS_new:** an additive attention that combines the embeddings of a user's reading histories and recent browsed news to a single vector and then performs dot product to the candidate news embeddings. Negative sampling is used in  model training. For each news browsed by a user (regarded as a positive sample), we randomly sample K news which are shown in the same impression but not clicked by the user (regarded as negative samples). We re-formulate the news click probability prediction problem as a pseudo (K + 1)-way classification task, and the lossfunction for model training is the negative log-likelihood of all positive samples.
@@ -21,12 +23,12 @@ The whole model consists of three modules: **TextEncoder**, **NewsEncoder**, and
 	* 'MINDlarge\_train' for training data
 	* 'MINDlarge\_dev' for validation data.
 2. **Data preprocess:**
-	* python data\_preprocess/behavior\_preprocess.py
-	* python data\_preprocess/news\_preprocess.py
+	* _python data\_preprocess/behavior\_preprocess.py_
+	* _python data\_preprocess/news\_preprocess.py_
 	 * 	(this two commands can be ran in parallel)
 3. **Model training:**
 	1. 	Set up directories for data files and hyperparameters in src/utils.py.
-	2. Model training: python src/main.py
+	2. Model training: _python src/main.py_
 3. **Generate ranking list of news for test set:**
 	* 	upcoming... 
 
