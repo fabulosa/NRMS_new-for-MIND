@@ -2,10 +2,10 @@
 
 The source codes of the NRMS_new model for the [MIcrosoft News Dataset(MIND)](https://msnews.github.io/) inspired by these papers:
 
-* NRMS-"Neural News Recommendation with Multi-Head Self-Attention" Chuhan Wu, Fangzhao Wu, Suyu Ge, Tao Qi, Yongfeng Huang,and Xing Xie (EMNLP 2019). 
-* MIND-"MIND: A Large-scale Dataset for News Recommendation" Fangzhao Wu, Ying Qiao, Jiun-Hung Chen, Chuhan Wu, Tao Qi, Jianxun Lian, Danyang Liu, Xing Xie, Jianfeng Gao, Winnie Wu, Ming Zhou (ACL 2020)
-* LSTUR-"Neural News Recommendation with Long- and Short-term User Representations" Mingxiao An, Fangzhao Wu, Chuhan Wu, Kun Zhang, Zheng Liu, Xing Xie (ACL 2019)
-* NAML-"Neural News Recommendation with Attentive Multi-View Learning" Chuhan Wu, Fangzhao Wu, Mingxiao An, Jianqiang Huang, Yongfeng Huang, Xing Xie (IJCAI 2019)
+* **NRMS**--"Neural News Recommendation with Multi-Head Self-Attention" Chuhan Wu, Fangzhao Wu, Suyu Ge, Tao Qi, Yongfeng Huang,and Xing Xie (EMNLP 2019). 
+* **MIND**--"MIND: A Large-scale Dataset for News Recommendation" Fangzhao Wu, Ying Qiao, Jiun-Hung Chen, Chuhan Wu, Tao Qi, Jianxun Lian, Danyang Liu, Xing Xie, Jianfeng Gao, Winnie Wu, Ming Zhou (ACL 2020)
+* **LSTUR**--"Neural News Recommendation with Long- and Short-term User Representations" Mingxiao An, Fangzhao Wu, Chuhan Wu, Kun Zhang, Zheng Liu, Xing Xie (ACL 2019)
+* **NAML**--"Neural News Recommendation with Attentive Multi-View Learning" Chuhan Wu, Fangzhao Wu, Mingxiao An, Jianqiang Huang, Yongfeng Huang, Xing Xie (IJCAI 2019)
 
 ### Brief model descriptions:
 
@@ -29,4 +29,7 @@ The whole model consists of three modules: **TextEncoder**, **NewsEncoder**, and
 	2. Model training: python src/main.py
 3. **Generate ranking list of news for test set:**
 	* 	upcoming... 
+
+
+contact: Weijie Jiang, jiangwj@berkeley.edu	
 
