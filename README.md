@@ -10,7 +10,6 @@ The source codes of the NRMS_new model for the [MIcrosoft News Dataset(MIND)](ht
 ### Brief model descriptions:
 
 The whole model consists of three modules: **TextEncoder**, **NewsEncoder**, and **NRMS_new**, which is a **hierarchical self-attention and additive attention structure** to embed users' reading histories, each news in their reading histories, and each part of news at the same time. 
-
 <p align='center'><img src="model.png", width=60%>
 
 1. **TextEncoder:** same as the NewsEncoder in NRMS, a combindation of multi-head self-attention and additive attention mechanism to generate embeddings for a text, which can be title text, abstract text, title entities, and abstract entities. It also serves as a natural framework to encode the reading history news sequences of users on top of the embeded news to a single vector.
