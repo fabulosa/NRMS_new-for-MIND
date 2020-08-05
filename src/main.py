@@ -9,7 +9,7 @@ from torch.autograd import Variable
 import torch.utils.data as Data
 import pickle
 from utils import *
-from newsencoder import *
+from NRMS_new import *
 
 
 def pad_masking(bat):
