@@ -16,12 +16,15 @@ The whole model consists of three modules: TextEncoder, NewsEncoder, and NRMS_ne
 Steps to run the code:
 1. Set up two folders in the same directory: 'MINDlarge_train' for training data and 'MINDlarge_dev' validation data.
 2. Data preprocess:
+	
 	python data_preprocess/behavior_preprocess.py
 	python data_preprocess/news_preprocess.py
 	(this two can be ran at the same time)
 3. Model training:
+	
 	(1) Set up directories for files and hyperparameters in src/utils.py.
 	(2) Model training: python src/main.py
 3. Generate ranking list of news for test set:
+	
 	upcoming... 
 
