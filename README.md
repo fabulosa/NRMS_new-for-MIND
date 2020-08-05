@@ -7,6 +7,7 @@ Source code of the NRMS_new model for the MIcrosoft News Dataset(MIND, https://m
 4. NAML-"Neural News Recommendation with Attentive Multi-View Learning" Chuhan Wu, Fangzhao Wu, Mingxiao An, Jianqiang Huang, Yongfeng Huang, Xing Xie (IJCAI 2019)
 
 Brief model descriptions:
+
 The whole model consists of three modules: TextEncoder, NewsEncoder, and NRMS_new, which is a hierarchical self-attention and additive attention structure to embed users' reading histories, each news in their reading histories, and each part of news at the same time. 
 1. TextEncoder: same as the NewsEncoder in NRMS, a combindation of multi-head self-attention and additive attention mechanism to generate embeddings for a text, which can be title text, abstract text, title entities, and abstract entities. It also serves a natural framework to encode the reading history sequences of users to a single vector.
 2. NewsEncoder: an additive attention that combines category embeddings, subcategory embeddings, title text embeddings, abstract text embeddings, title entity embeddings, and abstract entity embeddings and adds them up to a single vector for a piece of news.
