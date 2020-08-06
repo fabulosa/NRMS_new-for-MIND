@@ -1,4 +1,4 @@
-# NRMS_new-for-MIND
+# NRMS_new for MIND News Recommendation 
 
 The source codes of the NRMS_new model for the [MIcrosoft News Dataset(MIND)](https://msnews.github.io/) inspired by these papers:
 
@@ -18,13 +18,15 @@ The whole model consists of three modules: **TextEncoder**, **NewsEncoder**, and
 
 ### Steps to run the codes:
 
-1. **Set up two folders in the same directory:**   
+1. **Set up three folders in the same directory:**   
 	* 'MINDlarge\_train' for training data
-	* 'MINDlarge\_dev' for validation data.
+	* 'MINDlarge\_dev' for validation data
+	* 'glove' for the [pretrained GloVe embeddings](http://nlp.stanford.edu/data/glove.840B.300d.zip)
 2. **Data preprocess:**
 	* _python data\_preprocess/behavior\_preprocess.py_
 	* _python data\_preprocess/news\_preprocess.py_
-	 * 	(this two commands can be ran in parallel)
+	* *python glove/generate\_glove\_dict.py*
+	 * 	(this three commands can be ran in parallel)
 3. **Model training:**
 	1. 	Set up directories for data files and hyperparameters in src/utils.py.
 	2. Model training: _python src/main.py_
