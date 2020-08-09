@@ -40,5 +40,5 @@ The whole model consists of three modules: **TextEncoder**, **NewsEncoder**, and
 	* 	*python src/generate_recs.py*
 
 
-contact: Weijie Jiang, jiangwj@berkeley.edu	
+contact: Weijie Jiang, jiangwj[at]berkeley.edu	
 
