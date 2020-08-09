@@ -359,8 +359,10 @@ class NRMS_new(nn.Module):
         pad_batch_title_entity, batch_title_entity_mask_selfattn, batch_title_entity_mask_attn = self.pad_entity_masking(batch_title_entity)
         pad_batch_abstract_entity, batch_abstract_entity_mask_selfattn, batch_abstract_entity_mask_attn = self.pad_entity_masking(batch_abstract_entity)
         valid_news_embeddings = self.news_encoder(batch_category, batch_subcategory, pad_batch_title, pad_batch_abstract, pad_batch_title_entity, pad_batch_abstract_entity, batch_title_mask_selfattn, batch_title_mask_attn, batch_abstract_mask_selfattn, batch_abstract_mask_attn, batch_title_entity_mask_selfattn, batch_title_entity_mask_attn, batch_abstract_entity_mask_selfattn, batch_abstract_entity_mask_attn)
-        valid_news_embeddings = valid_news_embeddings.view(batch_user_valid.shape[0], -1)
-        dot = torch.sum(attend * valid_news_embeddings, dim=1)
+        #valid_news_embeddings = valid_news_embeddings.view(batch_user_valid.shape[0], -1)
+        #dot = torch.sum(attend * valid_news_embeddings, dim=1)
+        valid_news_embeddings = valid_news_embeddings.view(batch_user_valid.shape[0], -1, attend.size()[-1])
+        dot = torch.sum(attend.unsqueeze(1) * valid_news_embeddings, dim=2)
         return dot
 
     def pad_masking(self, bat):  # pad all titles to the maximum length, then generate masks for attention
@@ -396,11 +398,9 @@ class NRMS_new(nn.Module):
         return batch, torch.IntTensor(mask), torch.IntTensor(mask_attn).cuda()
 
     def loss(self, predict, label):
-        label = Variable(torch.FloatTensor(label), requires_grad=False).cuda()
-        m = nn.Sigmoid()
-        loss = nn.BCELoss()
-        #print(predict, m(predict))
-        output = loss(m(predict), label)
+        label = Variable(torch.LongTensor(label), requires_grad=False).cuda()
+        loss = nn.CrossEntropyLoss()
+        output = loss(predict, label)
         return output
 
 

@@ -117,8 +117,9 @@ if __name__ == '__main__':
     news_dev.columns = ['NewsID', 'Category', 'SubCategory', 'Title', 'Abstract', 'URL', 'TitleEntities', 'AbstractEntities']
     data = pd.concat((news_train, news_dev), axis=0)
     data = data.drop_duplicates()
-    
+
     save_category_subcategory(data['Category'], data['SubCategory'], data['NewsID'])
+
     save_word_embeddings(data['Title'], data['NewsID'], 'TitleWord')
     save_word_embeddings(data['Abstract'], data['NewsID'], 'AbstractWord')
     save_entity(data)

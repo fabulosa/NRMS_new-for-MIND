@@ -47,12 +47,12 @@ def process_batch_data(behavior_data, index):  # padding and masking
     recent = data[:, 2]
     batch_user_history, user_history_mask_selfattn, user_history_mask_attn = pad_masking(history)
     batch_user_short, user_short_mask_selfattn, user_short_mask_attn = pad_masking(recent)
-    batch_user_valid = np.array(list(data[:, 3])).squeeze(-1)
-    batch_label = np.array(list(data[:, 4])).squeeze(-1)
+    batch_user_valid = np.array(list(data[:, 3]))
+    batch_label = np.zeros(len(index), int)
     return batch_user_history, batch_user_short, user_history_mask_selfattn, user_history_mask_attn, user_short_mask_selfattn, user_short_mask_attn, batch_user_valid, batch_label
 
 
-def evaluate(model, loader, vali_data):
+def evaluate(model, loader, vali_data, epoch):
     model.eval()
     summ = []
     for step, (batch_x, batch_y) in enumerate(loader):  # batch_x: index of batch data
@@ -68,8 +68,8 @@ def evaluate(model, loader, vali_data):
         # compute output
         batch_predict = model(batch_user_history, batch_user_short, user_history_mask_selfattn, user_history_mask_attn, user_short_mask_selfattn, user_short_mask_attn, batch_user_valid, newsID_categoryID, newsID_subcategoryID, newsID_TitleWordID, newsID_AbstractWordID, newsID_titleEntityId_conf, newsID_abstractEntityId_conf).cuda()
         loss = model.loss(batch_predict, batch_label).cuda()
+        print('Epoch ' + str(epoch) + ': the ' + str(step + 1) + ' /' + str(num_iterations_vali) + '-th validation: loss: ' + str(loss.data[0]) + '\n')
         summ.append(loss.data[0])
-
     average_loss = np.average(summ)
     return average_loss
 
@@ -78,7 +78,7 @@ def train(model, optimizer, loader, train_data, epoch):
     model.train()
     summ = []
     for step, (batch_x, batch_y) in enumerate(loader):  # batch_x: index of batch data
-        print('Epoch: ', epoch+1, ' | Iteration: ', step + 1)
+        print('Epoch: ', epoch, ' | Iteration: ', step + 1, '/' + str(num_iterations))
         processed_data = process_batch_data(train_data, batch_x.numpy())
         batch_user_history = processed_data[0]
         batch_user_short = processed_data[1]
@@ -93,11 +93,10 @@ def train(model, optimizer, loader, train_data, epoch):
         optimizer.zero_grad()
         batch_predict = model(batch_user_history, batch_user_short, user_history_mask_selfattn, user_history_mask_attn, user_short_mask_selfattn, user_short_mask_attn, batch_user_valid, newsID_categoryID, newsID_subcategoryID, newsID_TitleWordID, newsID_AbstractWordID, newsID_titleEntityId_conf, newsID_abstractEntityId_conf).cuda()
         loss = model.loss(batch_predict, batch_label).cuda()
-        print('Epoch ' + str(epoch+1) + ': ' + 'The ' + str(step + 1) + '/' + str(num_iterations) + '-th interation: loss: ' + str(loss.data[0]) + '\n')
+        print('Epoch ' + str(epoch) + ': ' + 'The ' + str(step + 1) + '/' + str(num_iterations) + '-th interation: loss: ' + str(loss.data[0]) + '\n')
         loss.backward()
         optimizer.step()
         summ.append(loss.data[0])
-
     average_loss = np.mean(summ)
     return average_loss
 
@@ -123,14 +122,15 @@ def train_and_evaluate(training_data, validation_data):
     validate_data_index = Data.TensorDataset(data_tensor=validate_data_index, target_tensor=validate_data_index)
     vali_loader = Data.DataLoader(dataset=validate_data_index, batch_size=batch_size, shuffle=True, num_workers=16, drop_last=True)
 
-    for epoch in range(epochs):
-        print('-----epoch ' + str(epoch+1) + '------')
+    while True:
+        epoch += 1
+        print('-----epoch ' + str(epoch) + '------')
         print('set batches')
         training_loss = train(model, optimizer, train_loader, training_data, epoch)
         training_loss_epoch.append(training_loss)
         print('The average loss of training set for the first ' + str(epoch) + ' epochs: ' + str(training_loss_epoch))
 
-        evaluation_loss = evaluate(model, vali_loader, validation_data)
+        evaluation_loss = evaluate(model, vali_loader, validation_data, epoch)
         vali_loss_epoch.append(evaluation_loss)
         print('The average loss of validation set for the first ' + str(epoch) + ' epochs: ' + str(vali_loss_epoch))
 
@@ -146,15 +146,17 @@ def train_and_evaluate(training_data, validation_data):
                 f = open(pack_loss, 'wb')
                 pickle.dump(loss_train_vali, f)
                 f.close()
+                break
 
 
 if __name__ == '__main__':
 
-    model_name = 'NRMS_new.pkl'
-    pack_loss = 'NRMS_new_loss.pkl'
+    args = parse_args()
+
+    model_name = args.model_name
+    pack_loss = args.pack_loss
 
     print("loading hyper-parameters")
-    args = parse_args()
     news_final_embed_size = args.news_final_embed_size
     history_num_head = args.history_num_head
     history_attn_vector_size = args.history_attn_vector_size
@@ -224,6 +226,8 @@ if __name__ == '__main__':
     f.close()
     training_len = len(training_data)
     num_iterations = training_len // batch_size
+    validation_len = len(validation_data)
+    num_iterations_vali = validation_len // batch_size
     print('number of training samples', training_len)
-    train_and_validate(training_data, validation_data)
+    train_and_evaluate(training_data, validation_data)
 

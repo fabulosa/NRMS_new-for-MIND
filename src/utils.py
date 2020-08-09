@@ -2,15 +2,19 @@ import argparse
 import pickle
 import numpy as np
 
-from sklearn.metrics import (auc, f1_score, precision_recall_curve,
-                             roc_auc_score)
-
 
 def parse_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--training_data', type=str, default='/home/jenny/mind/data_preprocess/training_data.pkl',
                         help='Input training data path')
+
+    parser.add_argument('--validation_data', type=str,
+                        default='/home/jenny/mind/data_preprocess/validation_data.pkl',
+                        help='Input validation data path')
+
+    parser.add_argument('--evaluation_data', type=str, default='/home/jenny/mind/data_preprocess/evaluation_data.pkl',
+                        help='Input validation data path')
 
     parser.add_argument('--category_id', type=str, default='/home/jenny/mind/data_preprocess/category_id.pkl',
                         help='category_id dictionary')
@@ -87,11 +91,13 @@ def parse_args():
     parser.add_argument('--final_attn_vector_size', type=int, default=32,
                         help='dim of attn vector for encoding a news')
 
-
-    parser.add_argument('--batch_size', type=int, default=64,
+    parser.add_argument('--batch_size', type=int, default=1,
                         help='batch size of training')
 
-    parser.add_argument('--epochs', type=int, default=100,
-                        help='num of epochs')
+    parser.add_argument('--model_name', type=str, default='NRMS_new.pkl', help='the name of trained model')
+
+    parser.add_argument('--pack_loss', type=str, default='pack_loss.pkl', help='the name of the loss file')
+
+    parser.add_argument('--ranking_name', type=str, default='prediction.txt', help='the name of the prediction file')
 
     return parser.parse_args()

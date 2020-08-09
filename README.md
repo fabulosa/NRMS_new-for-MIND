@@ -29,13 +29,15 @@ The whole model consists of three modules: **TextEncoder**, **NewsEncoder**, and
 		* _python data\_preprocess/behavior\_preprocess.py_
 	* Preprocess features of news:
 		* _python data\_preprocess/news\_preprocess.py_
+	* Generate test set:
+		* _python data\_preprocess/behavior\_preprocess\_evaluation.py_
 	
-      	(the last two commands can be ran in parallel)
+      	(the last three commands can be ran in parallel)
 3. **Model training:**
 	1. 	Set up directories for data files and hyperparameters in src/utils.py.
 	2. Model training: _python src/main.py_
 3. **Generate ranking list of news for test set:**
-	* 	upcoming... 
+	* 	*python src/generate_recs.py*
 
 
 contact: Weijie Jiang, jiangwj@berkeley.edu	

@@ -9,7 +9,7 @@ def preprocess(data, negative_sampling_num, data_name):  # clicking histories on
     group_user = data.groupby('UserID')
     n = 0
     for key in group_user.groups.keys():
-        if data_name == 'validation_data_softmax':
+        if data_name == 'validation_data':
             print('generating validation data')
             if key not in validation_users:
                 print(key+' is not in validation users.')
@@ -19,7 +19,6 @@ def preprocess(data, negative_sampling_num, data_name):  # clicking histories on
         user_list = []
         user_list.append([key])
         user_data = group_user.get_group(key)
-        #print(user_data)
         user_long_his = user_data['Histories'].str.split(' ').iloc[0]
         user_list.append(user_long_his)
         # sort by timestamp
@@ -38,7 +37,7 @@ def preprocess(data, negative_sampling_num, data_name):  # clicking histories on
         user_pre = user_pre['Impressions'].str.split(' ')
 
         for i in user_pre:
-            #print(i)
+
             pre_true = []
             pre_false = []
             flag = 0  # count the number of positive clicks
@@ -75,7 +74,7 @@ if __name__ == '__main__':
     behaviors_train = pd.read_csv('../MINDlarge_train/behaviors.tsv', sep='\t', header=None)
     behaviors_train.columns = ['ImpressionID', 'UserID', 'Time', 'Histories', 'Impressions']
     behaviors_train['Time'] = pd.to_datetime(behaviors_train['Time'], format='%m/%d/%Y %I:%M:%S %p')
-    preprocess(behaviors_train, 4, 'training_data_softmax')
+    preprocess(behaviors_train, 4, 'training_data')
 
     behaviors_valid = pd.read_csv('../MINDlarge_dev/behaviors.tsv', sep='\t', header=None)
     behaviors_valid.columns = ['ImpressionID', 'UserID', 'Time', 'Histories', 'Impressions']
@@ -83,7 +82,7 @@ if __name__ == '__main__':
     validation_users = behaviors_valid['UserID'].tolist()
 
     behaviors = pd.concat((behaviors_train, behaviors_valid), axis=0)
-    preprocess(behaviors, 4, 'validation_data_softmax')
+    preprocess(behaviors, 4, 'validation_data')
 
 
 
