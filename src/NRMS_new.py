@@ -14,9 +14,9 @@ def attention(query, key, value, mask=None, dropout=None):
     "Compute 'Scaled Dot Product Attention'"
     d_k = query.size(-1)
     scores = torch.matmul(query, key.transpose(-2, -1)) / math.sqrt(d_k)
-    scores = scores.cpu()
+    scores = scores
     if mask is not None:
-        scores = scores.masked_fill(Variable(mask) == 0, -1e9).cuda()
+        scores = scores.masked_fill(Variable(mask) == 0, -1e9)
 
     p_attn = F.softmax(scores, dim=-1)
     if dropout is not None:
@@ -380,7 +380,7 @@ class NRMS_new(nn.Module):
         mask2 = mask[:, np.newaxis, :]
         mask = np.matmul(mask1, mask2)
         batch[batch == -1] = 0
-        return batch, torch.IntTensor(mask), torch.IntTensor(mask_attn).cuda()
+        return batch, torch.IntTensor(mask).cuda(), torch.IntTensor(mask_attn).cuda()
 
     def pad_entity_masking(self, bat):  # pad all entity to the maximum length, then generate masks for attention
         batch = bat
@@ -395,7 +395,7 @@ class NRMS_new(nn.Module):
         mask1 = mask[:, :, np.newaxis]
         mask2 = mask[:, np.newaxis, :]
         mask = np.matmul(mask1, mask2)
-        return batch, torch.IntTensor(mask), torch.IntTensor(mask_attn).cuda()
+        return batch, torch.IntTensor(mask).cuda(), torch.IntTensor(mask_attn).cuda()
 
     def loss(self, predict, label):
         label = Variable(torch.LongTensor(label), requires_grad=False).cuda()
