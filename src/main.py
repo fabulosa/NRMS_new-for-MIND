@@ -38,7 +38,7 @@ def pad_masking(bat):
     mask2 = mask[:, np.newaxis, :]
     mask = np.matmul(mask1, mask2)
     batch[batch == '-1'] = '0'
-    return batch, torch.IntTensor(mask).cuda(), torch.IntTensor(mask_attn).cuda()
+    return batch, torch.IntTensor(mask), torch.IntTensor(mask_attn).cuda()
 
 
 def process_batch_data(behavior_data, index):  # padding and masking
