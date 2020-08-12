@@ -201,11 +201,11 @@ if __name__ == '__main__':
 
     print("loading training data")
     f = open(args.training_data, 'rb')
-    training_data = pickle.load(f)['training_data_softmax']
+    training_data = pickle.load(f)['training_data']
 
     print("loading validation data")
     f = open(args.validation_data, 'rb')
-    validation_data = pickle.load(f)['validation_data_softmax']
+    validation_data = pickle.load(f)['validation_data']
 
     # trim very long reading sequences
     for i, j in enumerate(training_data):
