@@ -40,7 +40,7 @@ def save_word_embeddings(column_words, newsid, file_name):
     split = split.apply(lambda x: [i.rstrip(',.!?\'\"') for i in x])
     split = split.apply(lambda x: [i.lstrip(',.!?\'\"') for i in x])
     words = split.tolist()
-    word_vocab = list(set(np.concatenate(np.array(words))))
+    word_vocab = list(set([word for sublist in words for word in sublist]))
 
     "save word embeddings from glove"
     f = open('../glove/glove_dict.pkl', 'rb')
